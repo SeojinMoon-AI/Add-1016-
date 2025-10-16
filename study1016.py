@@ -48,6 +48,24 @@ def open_calculator():
         expression = ""
         equation.set("0")
 
+    # 키보드 입력 처리 함수
+    def handle_key_press(event):
+        nonlocal expression
+        key = event.char
+        keysym = event.keysym
+
+        if key in '0123456789./*-+':
+            button_press(key)
+        elif keysym == 'Return' or key == '=':
+            equals_press()
+        elif keysym == 'BackSpace':
+            expression = expression[:-1]
+            equation.set(expression if expression else '0')
+        elif keysym == 'Escape':
+            clear()
+
+    calc_window.bind('<KeyPress>', handle_key_press)
+    calc_window.focus_set() # 새 창이 열릴 때 키보드 입력을 바로 받도록 포커스 설정
     # 계산기 버튼 생성
     buttons = [
         '7', '8', '9', '/',
